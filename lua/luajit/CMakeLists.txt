@@ -20,6 +20,10 @@ if(WINDOWS)
     IMPORTED_LOCATION "${platform_spec_path}/lua51.dll"
     IMPORTED_IMPLIB "${platform_spec_path}/lua51.lib"
   )
+elseif(EMSCRIPTEN)
+  set_target_properties(${target_name} PROPERTIES
+    IMPORTED_LOCATION "${platform_spec_path}/liblua.a"
+  )
 else()
   set_target_properties(${target_name} PROPERTIES
     IMPORTED_LOCATION "${platform_spec_path}/lib${lib_name}.a"
