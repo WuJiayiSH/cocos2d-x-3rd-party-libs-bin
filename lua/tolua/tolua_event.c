@@ -64,7 +64,7 @@ static int module_index_event (lua_State* L)
     {
         lua_pushvalue(L,2);  /* key */
         lua_rawget(L,-2);
-        if (lua_iscfunction(L,-1))
+        if (lua_isfunction(L,-1))
         {
             lua_call(L,0,1);
             return 1;
@@ -104,7 +104,7 @@ static int module_newindex_event (lua_State* L)
     {
         lua_pushvalue(L,2);  /* key */
         lua_rawget(L,-2);
-        if (lua_iscfunction(L,-1))
+        if (lua_isfunction(L,-1))
         {
             lua_pushvalue(L,1); /* only to be compatible with non-static vars */
             lua_pushvalue(L,3); /* value */
@@ -151,7 +151,7 @@ static int class_table_get_index (lua_State* L)
         if (lua_istable(L,-1)) {
             lua_pushvalue(L,2);  /* stack: obj key ... mt tget key */
             lua_rawget(L,-2);    /* stack: obj key ... mt tget value */
-            if (lua_iscfunction(L,-1)) {
+            if (lua_isfunction(L,-1)) {
                 lua_call(L,0,1);
                 return 1;
             } else if (lua_istable(L,-1)) {
@@ -208,9 +208,11 @@ static int class_index_event (lua_State* L)
                 lua_rawget(L,-2);                      /* stack: obj key mt func */
                 if (lua_isfunction(L,-1))
                 {
+                    // getter takes only one argument to fit setter
+                    // getter and seter should be of set(callee, v) getVar(callee), not setVar(callee, k, v) getVar(callee, k)
                     lua_pushvalue(L,1);
-                    lua_pushvalue(L,2);
-                    lua_call(L,2,1);
+                    // lua_pushvalue(L,2);
+                    lua_call(L,1,1);
                     return 1;
                 }
             }
@@ -229,11 +231,13 @@ static int class_index_event (lua_State* L)
                 {
                     lua_pushvalue(L,2);
                     lua_rawget(L,-2);                      /* stack: obj key mt value */
-                    if (lua_iscfunction(L,-1))
+                    if (lua_isfunction(L,-1))
                     {
+                        // getter takes only one argument to fit setter
+                        // getter and seter should be of set(callee, v) getVar(callee), not setVar(callee, k, v) getVar(callee, k)
                         lua_pushvalue(L,1);
-                        lua_pushvalue(L,2);
-                        lua_call(L,2,1);
+                        // lua_pushvalue(L,2);
+                        lua_call(L,1,1);
                         return 1;
                     }
                     else if (lua_istable(L,-1))
@@ -356,7 +360,7 @@ static int class_newindex_event (lua_State* L)
                 {
                     lua_pushvalue(L,2);
                     lua_rawget(L,-2);                     /* stack: t k v mt tset func */
-                    if (lua_iscfunction(L,-1))
+                    if (lua_isfunction(L,-1))
                     {
                         lua_pushvalue(L,1);
                         lua_pushvalue(L,3);
@@ -384,7 +388,7 @@ static int class_newindex_event (lua_State* L)
         if (lua_istable(L,-1)) {
             lua_pushvalue(L,2);  /* stack: t k v mt tset k */
             lua_rawget(L,-2);
-            if (lua_iscfunction(L,-1)) {  /* ... func */
+            if (lua_isfunction(L,-1)) {  /* ... func */
                 lua_pushvalue(L,1); /* ... func t */
                 lua_pushvalue(L,3); /* ... func t v */
                 lua_call(L,2,0);
