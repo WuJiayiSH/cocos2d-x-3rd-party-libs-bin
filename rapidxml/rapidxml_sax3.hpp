@@ -169,7 +169,7 @@ namespace rapidxml
             {
                 // Skip whitespace before node
                 skip<whitespace_pred, Flags>(text, endptr_);
-                if (*text == 0 || text >= endptr_)
+                if (text >= endptr_ || *text == 0)
                     break;
 
                 // Parse and append new child
