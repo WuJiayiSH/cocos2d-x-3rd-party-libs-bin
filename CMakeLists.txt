@@ -24,6 +24,7 @@ option(BUILD_EXT_SQLITE "Build with internal SQLite support" ON)
 option(BUILD_EXT_ZLIB "Build with internal zlib support" ON)
 option(BUILD_EXT_CURL "Build with internal curl support" ON)
 option(BUILD_EXT_UNZIP "Build with internal unzip support" ON)
+option(BUILD_EXT_IMGUI "Build with internal imgui support" ON)
 
 add_library(external empty.cpp)
 
@@ -193,6 +194,11 @@ if(BUILD_EXT_UNZIP)
     add_subdirectory(unzip)
     target_link_libraries(external ext_unzip)
 endif(BUILD_EXT_UNZIP)
+
+if(BUILD_EXT_IMGUI)
+    add_subdirectory(imgui)
+    target_link_libraries(external ext_imgui)
+endif(BUILD_EXT_IMGUI)
 
 # put "external" into External folder, too
 set_target_properties(external
