@@ -1,3 +1,6 @@
 [submodule "imgui/imgui"]
 	path = imgui/imgui
 	url = https://github.com/ocornut/imgui.git
+[submodule "tinyxml2/tinyxml2"]
+	path = tinyxml2/tinyxml2
+	url = https://github.com/leethomason/tinyxml2

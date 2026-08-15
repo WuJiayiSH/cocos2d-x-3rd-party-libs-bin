@@ -6,14 +6,14 @@ set(target_name ext_${lib_name})
 project(${lib_name})
 
 set(${target_name}_src
-  tinyxml2.cpp
+  tinyxml2/tinyxml2.cpp
 )
 
 add_library(${target_name} STATIC
   ${${target_name}_src}
 )
 
-target_include_directories(${target_name} PUBLIC .)
+target_include_directories(${target_name} PUBLIC ./tinyxml2)
 
 include(../cmake/CocosExternalConfig.cmake)
 if(WINDOWS)
